@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="generator" content="Hugo 0.135.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+<title>Apache Kafka: Conceitos Básicos</title>
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/reveal-js/dist/reset.css">
+<link rel="stylesheet" href="/reveal-js/dist/reveal.css"><link rel="stylesheet" href="/reveal-js/dist/theme/white.css" id="theme">
+<link rel="stylesheet" href="/highlight-js/default.min.css"><link rel="stylesheet" href="/css/custom.css" id="custom_css">
+  </head>
+  <body>
+    
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><figure><img src="https://apache.org/logos/res/kafka/kafka_highres.png"
+    alt="Kafka Logo" width="40%">
+</figure>
+
+<p>por Ricardo Costa</p>
+</section><section>
+<p><figure><a href="https://assets.confluent.io/m/1b509accf21490f0/original/20170707-EB-Confluent_Kafka_Definitive-Guide_Complete.pdf?_gl=1*15jm00l*_gcl_aw*R0NMLjE3MjgzNTAxMTIuQ2owS0NRandqWTY0QmhDYUFSSXNBSWZjN1laX3RpT2RnOU94aW9OQkVZN095SHdoSjNrNnl1UmkwM19fbzhkU2FqTGVhUXMxckZvRllUNGFBa1U2RUFMd193Y0I.*_gcl_au*MjI3MTEwMzA4LjE3MjUzODc5NjMuMTExMTc2NjQzMC4xNzI3MjAxNDc1LjE3MjcyMDE0NzQ.*_ga*MTk0MDkxMzAzMi4xNzI1Mzg3OTY2*_ga_D2D3EGKSGD*MTcyODM1MDExMS4zLjEuMTcyODM1MDE1Mi4xOS4wLjA.&amp;_ga=2.169058401.1567090605.1728350112-1940913032.1725387966&amp;_gac=1.225393256.1728350151.Cj0KCQjwjY64BhCaARIsAIfc7YZ_tiOdg9OxioNBEY7OyHwhJ3k6yuRi03__o8dSajLeaQs1rFoFYT4aAkU6EALw_wcB"><img src="/image-10.png"
+    alt="Kafka The Definitive Guide" width="40%"></a>
+</figure>
+ ⚒️ 👨‍💻</p>
+</section><section>
+<h2 id="o-que-é-kafka-mensageria">O que é <del>Kafka</del> Mensageria?</h2>
+<ul>
+<li><strong>Mensageria</strong> é o processo de envio e recebimento de mensagens entre sistemas.</li>
+<li><strong>Mensagens</strong> são unidades básicas de dados que podem ser enviadas entre sistemas.</li>
+</ul>
+</section><section>
+<h2 id="o-que-é-kafka">O que é Kafka?</h2>
+<ul>
+<li><strong>Apache Kafka</strong> é uma plataforma de mensageria distribuída, que permite a publicação, armazenamento e processamento de fluxos de dados de forma escalável e eficiente.</li>
+<li>Criada por Jay Kreps e outros na LinkedIn, foi liberada como open source em 2012.</li>
+</ul>
+</section><section>
+<h2 id="casos-de-uso---rastreamento-de-atividades">Casos de Uso - Rastreamento de Atividades</h2>
+<ul>
+<li>Utilizado para <strong>rastrear atividades de usuários</strong> em tempo real, como eventos gerados em sites ou aplicativos.</li>
+<li>Esses eventos são publicados em tópicos e consumidos por diversas aplicações para análises, relatórios e aprendizado de máquina.</li>
+</ul>
+</section><section>
+<h2 id="casos-de-uso---rastreamento-de-atividades-1">Casos de Uso - Rastreamento de Atividades</h2>
+<figure><img src="/image-3.png"
+    alt="Kafka Logo" width="70%">
+</figure>
+
+</section><section>
+<h2 id="casos-de-uso---mensageria">Casos de Uso - Mensageria</h2>
+<ul>
+<li>Kafka também é usado em <strong>sistemas de mensageria</strong>, onde múltiplos serviços produzem e consomem mensagens como notificações, alertas e alterações de odds em tempo real.</li>
+</ul>
+</section><section>
+<figure><img src="/image-12.png"
+    alt="Kafka Logo" width="50%">
+</figure>
+
+</section><section>
+<h2 id="publishsubscribe">Publish/Subscribe</h2>
+<ul>
+<li>Kafka utiliza o modelo <strong>Publish/Subscribe</strong> para integrar diferentes sistemas:
+<ul>
+<li><strong>Produtores</strong> publicam mensagens em tópicos.</li>
+<li><strong>Consumidores</strong> assinam (subscribe) tópicos e consomem essas mensagens.</li>
+<li>Publicação e consumo são <strong>desacoplados</strong>, ou seja, o produtor e o consumidor não precisam se conhecer diretamente.</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<p><img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*kHJTZ0amwOvx2zWkEiWPMg.gif" alt="alt text"></p>
+</section><section>
+<h2 id="como-funciona-kafka">Como funciona Kafka?</h2>
+<ul>
+<li>Produtores enviam mensagens para <strong>tópicos</strong>, que são categorias lógicas.</li>
+<li>Essas mensagens são armazenadas em <strong>partições</strong>, que são logs de eventos ordenados.</li>
+<li>Consumidores leem as mensagens dessas partições em tempo real.</li>
+</ul>
+</section><section>
+<p><img src="image-4.png" alt="alt text"></p>
+</section><section>
+<h2 id="mensagens">Mensagens</h2>
+<ul>
+<li>Unidade básica de dados no Kafka, semelhante a uma linha ou registro de banco de dados.</li>
+<li>Kafka armazena as mensagens como <strong>arrays de bytes</strong>, sem formato específico.</li>
+<li>Uma <strong>chave</strong> opcional pode ser usada para definir a partição de destino da mensagem. Mensagens com a mesma chave são enviadas para a mesma partição.</li>
+</ul>
+</section><section>
+<h2 id="batches">Batches</h2>
+<ul>
+<li>Um <strong>batch</strong> é um conjunto de mensagens enviadas de uma vez para o mesmo tópico e partição.</li>
+<li>O uso de batches aumenta a eficiência, agrupando múltiplas mensagens em uma única transmissão de rede.</li>
+</ul>
+</section><section>
+<h2 id="tópicos">Tópicos</h2>
+<ul>
+<li>Categorias lógicas onde as mensagens são publicadas.
+<ul>
+<li>Exemplo: <code>appLogs</code> para logs de uma aplicação, <code>dbLogs</code> para logs de banco de dados, <code>uof.pre-match.soccer</code>, <code>uof.live.soccer</code> para eventos esportivos.</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<h2 id="partições">Partições</h2>
+<ul>
+<li>Cada tópico pode ser dividido em várias <strong>partições</strong> para aumentar a escalabilidade.</li>
+<li>Kafka garante a ordem das mensagens dentro de uma <strong>única partição</strong>, mas não necessariamente entre partições diferentes.</li>
+</ul>
+</section><section>
+<h3 id="consumidores">Consumidores:</h3>
+<ul>
+<li><strong>Consumidores</strong> leem mensagens de tópicos de forma sequencial.</li>
+</ul>
+</section><section>
+<h3 id="grupos-de-consumidores">Grupos de Consumidores:</h3>
+<ul>
+<li>Um <strong>grupo de consumidores</strong> permite que múltiplos consumidores leiam de maneira balanceada:
+<ul>
+<li>Cada partição de um tópico é consumida por apenas um consumidor dentro de um grupo.</li>
+<li>Se um consumidor falha, Kafka reatribui automaticamente as partições a outros consumidores no grupo.</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<!-- ![alt text](image-5.png) -->
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*8ar0JZtvhY2Cfr_CswX10Q.gif" alt="alt text"></p>
+</section><section>
+<h2 id="brokers">Brokers</h2>
+<ul>
+<li>Um <strong>broker</strong> é um servidor Kafka responsável por receber, armazenar e fornecer mensagens para os consumidores.</li>
+</ul>
+</section><section>
+<h2 id="clusters">Clusters</h2>
+<ul>
+<li>Um <strong>cluster Kafka</strong> é composto por múltiplos brokers, o que garante escalabilidade e alta disponibilidade.</li>
+<li>Cada partição tem um <strong>líder</strong>, responsável por processar as gravações, enquanto outros brokers replicam os dados para redundância e tolerância a falhas.</li>
+</ul>
+</section><section>
+<p><img src="image-6.png" alt="alt text"></p>
+</section><section>
+<h2 id="kafka-multiplos-clusters-e-disaster-recovery">Kafka: Multiplos clusters e disaster recovery</h2>
+<ul>
+<li>Kafka pode replicar dados entre clusters para atender a requisitos de <strong>disaster recovery</strong> ou separar dados por categorias.</li>
+</ul>
+</section><section>
+<p><img src="image-7.png" alt="alt text"></p>
+</section><section>
+<h1 id="kafka-vs-rabbitmq">Kafka vs RabbitMQ</h1>
+</section><section>
+<h2 id="principais-diferenças">Principais Diferenças</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Característica</th>
+          <th style="text-align: left">RabbitMQ</th>
+          <th style="text-align: left">Apache Kafka</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Modelo de Mensagens</strong></td>
+          <td style="text-align: left">Fila de Mensagens</td>
+          <td style="text-align: left">Log de Eventos Persistente</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Persistência</strong></td>
+          <td style="text-align: left">Mensagens podem ser descartadas após consumo</td>
+          <td style="text-align: left">Mensagens são armazenadas por um período configurável</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Escalabilidade</strong></td>
+          <td style="text-align: left">Limitada, com complexidade ao escalar</td>
+          <td style="text-align: left">Alta escalabilidade com suporte a clusters distribuídos</td>
+      </tr>
+  </tbody>
+</table>
+</section><section>
+<h1 id="kafka-cli">Kafka CLI</h1>
+</section><section>
+<h3 id="criar-um-tópico">Criar um tópico</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>bin/kafka-topics.sh --create --topic meu-topico 
+</span></span><span style="display:flex;"><span>--partitions <span style="color:#ae81ff">5</span> 
+</span></span><span style="display:flex;"><span>--replication-factor <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>--retention.ms <span style="color:#ae81ff">172800000</span> <span style="color:#75715e">#(2 dias)</span>
+</span></span><span style="display:flex;"><span>--zookeeper localhost:2181
+</span></span></code></pre></div><h3 id="listar-tópicos">Listar tópicos</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>bin/kafka-topics.sh --list --zookeeper localhost:2181
+</span></span></code></pre></div><h3 id="descrição-de-um-tópico">Descrição de um tópico</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>bin/kafka-topics.sh --describe --topic meu-topico 
+</span></span><span style="display:flex;"><span>--zookeeper localhost:2181    
+</span></span></code></pre></div><p>Ver: <a href="https://reidopitaco.getoutline.com/doc/managing-kafka-with-its-cli-tXfGXgVqyr">Kafka CLI @ Outline</a></p>
+</section><section>
+<h2 id="além-do-feijão-com-arroz">Além do feijão com arroz</h2>
+</section><section>
+<h3 id="produtores-métodos-de-envio">Produtores: Métodos de Envio</h3>
+<ul>
+<li><strong>Fire and forget</strong>: Envia sem esperar confirmação</li>
+<li><strong>Envio síncrono</strong>: Aguarda confirmação antes de continuar</li>
+<li><strong>Envio assíncrono</strong>: Usa callbacks para confirmação</li>
+</ul>
+</section><section>
+<h3 id="configurações-de-acknowledgment-ack">Configurações de Acknowledgment (ACK)</h3>
+<ul>
+<li><strong>ACK 0</strong>: Não espera confirmação | MAIS RÁPIDO</li>
+<li><strong>ACK 1</strong>: Confirmação do líder | RÁPIDO</li>
+<li><strong>ACK All</strong>: Confirmação de todas as réplicas | MENOS RÁPIDO</li>
+</ul>
+</section><section>
+<h3 id="otimizações-do-produtor">Otimizações do Produtor</h3>
+<ul>
+<li>Compressão de mensagens</li>
+<li>Envio em lotes (batching)</li>
+<li>Uso de Avro para serialização/deserialização</li>
+</ul>
+</section><section>
+<h3 id="consumidores-características-principais">Consumidores: Características Principais</h3>
+<ul>
+<li><strong>Poll loop</strong>: Consumidores buscam ativamente dados do broker</li>
+<li><strong>Estratégias de atribuição de partições</strong>:
+<ul>
+<li>Range, Round Robin, Sticky, Cooperative Sticky</li>
+</ul>
+</li>
+<li><strong>Configuração de tamanho de lote</strong></li>
+<li><strong>Commit de offset</strong>: Automático ou explícito, síncrono ou assíncrono</li>
+</ul>
+</section><section>
+<h2 id="otimizando-seu-kafka">Otimizando seu Kafka</h2>
+<figure><img src="/image-9.png"
+    alt="Kafka Logo" width="50%">
+</figure>
+
+<p>Ver: <a href="https://assets.confluent.io/m/6b6d4f8910691700/original/20190626-WP-Optimizing_Your_Apache_Kafka_Deployment.pdf?_gl=1*14zlfqd*_gcl_aw*R0NMLjE3MjcyMDE0NTEuQ2owS0NRand4c20zQmhEckFSSXNBTXRWejZPc3FlZGliUXAwTEI2ZnhpUGl6LTJ1RkZEZ3NLdlBLVGdIT04tbGpiaS1ZTExXS2ZrQnpCWWFBaU00RUFMd193Y0I.*_gcl_au*MjI3MTEwMzA4LjE3MjUzODc5NjMuMTExMTc2NjQzMC4xNzI3MjAxNDc1LjE3MjcyMDE0NzQ.*_ga*MTk0MDkxMzAzMi4xNzI1Mzg3OTY2*_ga_D2D3EGKSGD*MTcyNzIwMTQ1MS4yLjEuMTcyNzIwMTQ3NS4zNi4wLjA.&amp;_ga=2.101715009.1584619933.1727201451-1940913032.1725387966&amp;_gac=1.225310312.1727201474.Cj0KCQjwxsm3BhDrARIsAMtVz6OsqedibQp0LB6fxiPiz-2uFFDgsKvPKTgHON-ljbi-YLLWKfkBzBYaAiM4EALw_wcB">Optimizing Your Apache Kafka Deployment</a></p>
+</section><section>
+<h2 id="throughput">Throughput</h2>
+<ul>
+<li><strong>Throughput</strong> é a taxa de transferência de dados, medida em mensagens por segundo (TPS).</li>
+<li>O throughput de um Kafka cluster é limitado pelo <strong>líder da partição</strong>.</li>
+<li>Para aumentar o throughput, você pode aumentar o número de partições em um tópico.</li>
+</ul>
+</section><section>
+<h2 id="latency">Latency</h2>
+<ul>
+<li><strong>Latency</strong> é o tempo que uma mensagem leva para viajar de um produtor a um consumidor.</li>
+<li>A latência de um Kafka cluster é limitada pelo <strong>líder da partição</strong>.</li>
+<li>Para reduzir a latência, você pode aumentar o número de partições em um tópico.</li>
+</ul>
+</section><section>
+<h2 id="durability">Durability</h2>
+<ul>
+<li><strong>Durability</strong> é a capacidade de um Kafka cluster de resistir a falhas.</li>
+<li>Kafka armazena mensagens em disco para garantir que elas não sejam perdidas em caso de falha do broker.</li>
+<li>Para garantir a durabilidade, você pode aumentar o número de réplicas em um tópico.</li>
+</ul>
+</section><section>
+<h2 id="availability">Availability</h2>
+<ul>
+<li><strong>Availability</strong> é a capacidade de um Kafka cluster de estar disponível para os consumidores.</li>
+<li>Kafka armazena mensagens em disco para garantir que elas não sejam perdidas em caso de falha do broker.</li>
+<li>Para garantir a disponibilidade, você pode aumentar o número de réplicas em um tópico.</li>
+</ul>
+</section><section>
+<h2 id="ahkq---gui-para-kafka">AHKQ - GUI para Kafka</h2>
+<ul>
+<li><strong>Gestão Simplificada</strong>: Interface gráfica para gerenciar tópicos, dados, grupos de consumidores, schema registry e conexões no Apache Kafka.</li>
+<li><strong>Recursos Avançados</strong>: Monitora o status dos clusters, permite a criação e a visualização de mensagens em tempo real, e facilita a administração de múltiplas regiões/clusters.</li>
+</ul>
+</section><section>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Consumer lag</strong>: acontece quando os consumidores não estão processando as mensagens tão rápido quanto os produtores estão produzindo.</li>
+</ul>
+<p>Além do kafka-consumer-groups.sh também pode ser usado para verificar o status do lag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group meu-grupo
+</span></span></code></pre></div></section><section>
+<h1 id="demo-">DEMO 😈</h1>
+</section><section>
+</section><section>
+<h1 id="appendix">APPENDIX</h1>
+</section><section>
+<h2 id="throughput-1">Throughput</h2>
+<p>Producer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• batch.size: increase to <span style="color:#ae81ff">100000</span> – <span style="color:#ae81ff">200000</span> <span style="color:#f92672">(</span>default 16384<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• linger.ms: increase to <span style="color:#ae81ff">10</span> – <span style="color:#ae81ff">100</span> <span style="color:#f92672">(</span>default 0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• compression.type<span style="color:#f92672">=</span>lz4 <span style="color:#f92672">(</span>default none, i.e., no compression<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Consumer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• fetch.min.bytes: increase to ~100000 <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span></code></pre></div></section><section>
+<h2 id="latency-1">Latency</h2>
+<p>Producer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• linger.ms<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>default 0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• compression.type<span style="color:#f92672">=</span>none <span style="color:#f92672">(</span>default none, i.e., no compression<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• acks<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Consumer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• fetch.min.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span></code></pre></div></section><section>
+<h2 id="availability-1">Availability</h2>
+<p>Consumer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• session.timeout.ms: as low as feasible <span style="color:#f92672">(</span>default 10000<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Broker:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• unclean.leader.election.enable<span style="color:#f92672">=</span>true
+</span></span></code></pre></div></section><section>
+<h2 id="durability-1">Durability</h2>
+<p>Producer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• replication.factor<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• acks<span style="color:#f92672">=</span>all <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• enable.idempotence<span style="color:#f92672">=</span>true <span style="color:#f92672">(</span>default false<span style="color:#f92672">)</span>, to handle message duplication and ordering
+</span></span></code></pre></div><p>Consumer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• enable.auto.commit<span style="color:#f92672">=</span>false <span style="color:#f92672">(</span>default true<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Broker:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span>• replication.factor<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>default 1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>• auto.create.topics.enable<span style="color:#f92672">=</span>false <span style="color:#f92672">(</span>default true<span style="color:#f92672">)</span>
+</span></span></code></pre></div></section><section>
+<h2 id="por-que-escolher-kafka">Por que escolher Kafka?</h2>
+<h3 id="alta-performance">Alta Performance</h3>
+<ul>
+<li><strong>Desempenho escalável</strong>: Kafka pode lidar com grandes volumes de dados com <strong>baixa latência</strong>, garantindo a entrega rápida de mensagens.</li>
+</ul>
+<h3 id="retenção-de-dados">Retenção de Dados</h3>
+<ul>
+<li>Kafka armazena as mensagens em disco por períodos configuráveis, permitindo que os consumidores processem dados no próprio ritmo, sem risco de perda.</li>
+</ul>
+</section><section>
+<h2 id="kafka-é-flexível">Kafka é Flexível</h2>
+<ul>
+<li><strong>Suporte para múltiplos clusters</strong>: Kafka pode replicar dados entre clusters para atender a requisitos de <strong>disaster recovery</strong> ou separar dados por categorias.</li>
+<li><strong>Escalabilidade horizontal</strong>: O Kafka permite começar com poucos brokers e escalar conforme necessário, sem comprometer a disponibilidade.</li>
+</ul>
+</section><section>
+<p><img src="image-7.png" alt="alt text"></p>
+</section><section>
+</section>
+
+  
+
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src=/reveal-hugo/object-assign.js></script>
+
+
+<script src="/reveal-js/dist/reveal.js"></script>
+
+
+  <script type="text/javascript" src="/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/zoom/zoom.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/notes/notes.js"></script>
+  
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+  var revealHugoSiteParams = {"backgroundtransition":"slide","center":true,"controls":true,"custom_css":"css/custom.css","customtheme":"true","loop":false,"progress":true,"slidenumber":true,"theme":"white","transition":"fade"};
+  var revealHugoPageParams = {};
+
+  var revealHugoPlugins = {
+    
+    plugins: [RevealMarkdown,RevealHighlight,RevealZoom,RevealNotes]
+  };
+
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams),
+    camelize(revealHugoPlugins));
+
+  Reveal.initialize(options);
+</script>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+
+
+    
+    
+  </body>
+</html>

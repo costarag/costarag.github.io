@@ -1,0 +1,9 @@
+.reveal {
+    border: 20px solid #2d5f3a; /* Replace with your company's green color */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.reveal .slides {
+    padding: 0;
+}
